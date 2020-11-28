@@ -14,7 +14,8 @@ router.post('/users/login', async (req, res) => { // log in user
     }
 })
 
-router.post('/users', async (req, res) => { // create a user
+router.post('/users/register', async (req, res) => { // create a user
+    if (req.body.hasOwnProperty('role')) delete req.body.role
     try {
         const user = new User(req.body)
         await user.save();
@@ -48,6 +49,17 @@ router.post('/users/logoutAll', auth, async (req, res) => {
 })
 
 // FOR ADMIN ONLY
+
+router.post('/users/', isAdmin, async (req, res) => { // create a user
+    try {
+        const user = new User(req.body)
+        await user.save();
+        res.status(200).send(user);
+    } catch (e) {
+        console.log(e);
+        res.status(400).send(e);
+    }
+})
 
 router.get('/admin/users', isAdmin, async (req, res) => { // read all users (admin)
     try {

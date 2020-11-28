@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const validator = require('validator');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const uniqueValidator = require('mongoose-unique-validator');
 
 const Schema = mongoose.Schema;
 
@@ -13,6 +14,7 @@ const userSchema = new Schema({
     },
     email: {
         type: String,
+        unique: true,
         trim: true,
         required: true,
         lowercase: true,
@@ -39,13 +41,13 @@ const userSchema = new Schema({
             required: true
         }
     }],
-    roles: [{ // array of token
-        role: { // foreach token, should be
-            type: String,
-            required: true
-        }
-    }]
+    role: { // array of token
+        type: String,
+        default: 'general'
+    }
 })
+
+userSchema.plugin(uniqueValidator); // Apply the uniqueValidator plugin to userSchema.
 
 userSchema.methods.toJSON = function () { //  hiding private data / deleting properties from object, when returning data
     const user = this
