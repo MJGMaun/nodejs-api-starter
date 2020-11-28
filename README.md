@@ -1,4 +1,4 @@
-# nodejs-api-starter
+# NodeJS RestAPI - Boilerplate
 
 - EXPRESSJS
 - MONGODB
